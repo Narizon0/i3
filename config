@@ -1,0 +1,181 @@
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+#exec_always --no-startup-id $HOME/.config/polybar/lauch.sh
+exec_always --no-startup-id autotiling
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+#font
+font pango:noto 09
+
+#---Basic-definifions---#
+smart_gaps on
+smart_borders on
+
+#varibles
+set $alt Mod1
+set $super Mod4
+set $search --no-startup-id rofi
+set $lock i3lock
+set $term --no-startup-id alacritty
+set $firefox --no-startup-id firefox
+set $ws1 "1 "
+set $ws2 "2 "
+set $ws3 "3 "
+set $ws4 "4 Discord"
+set $ws5 "5 Telegram"
+set $ws6 "6"
+
+#--------Gaps--------#
+for_window [class="^.*"] border pixel 1
+#gaps inner 2
+#gaps outer 0
+
+#movement
+  #focus
+bindsym $alt+h focus left
+bindsym $alt+t focus down
+bindsym $alt+n focus up
+bindsym $alt+s focus right
+    #container in workspace
+bindsym $alt+Shift+h move left 30
+#bindsym $alt+Shift+t move down 30
+bindsym $alt+Shift+n move up 30
+bindsym $alt+Shift+s move right 30
+    #container to workspace
+bindsym $alt+Shift+1 move container to workspace $ws1
+bindsym $alt+Shift+2 move container to workspace $ws2
+bindsym $alt+Shift+3 move container to workspace $ws3
+bindsym $alt+Shift+4 move container to workspace $ws4
+bindsym $alt+Shift+5 move container to workspace $ws5
+bindsym $alt+Shift+6 move container to workspace $ws6
+    #named
+      #terminals
+bindsym $alt+Shift+slash move container to workspace $ws1
+      #firefox's
+bindsym $alt+Shift+f move container to workspace $ws2
+      #musics
+bindsym $alt+Shift+m move container to workspace $ws3
+      #discord
+bindsym $alt+Shift+d move container to workspace $ws4
+  #WorkSpace
+bindsym $super+1 workspace $ws1
+bindsym $super+2 workspace $ws2
+bindsym $super+3 workspace $ws3
+bindsym $super+4 workspace $ws4
+bindsym $super+5 workspace $ws5
+bindsym $super+6 workspace $ws6
+    #named
+      #terminals
+bindsym $alt+slash workspace $ws1
+      #firefox's
+bindsym $alt+f workspace $ws2
+      #musics
+bindsym $alt+m workspace $ws3
+      #discord
+bindsym $alt+d workspace $ws4
+
+
+#functions
+bindsym F7                  exec $term -e nvim ~/.config/nvim/init.vim
+bindsym F8                  exec $term -e nvim ~/.config/i3/config
+bindsym F9                  exec $term -e nvim ~/.config/alacritty/alacritty.yml
+bindsym $super+slash        exec $term
+bindsym $super+Tab	        workspace next
+bindsym $super+Shift+Tab	  workspace prev
+bindsym $super+F1           restart
+bindcode $alt+65            focus mode_toggle
+  #a
+bindsym $super+a            exec $term -e alsamixer
+  #b
+  #c
+bindsym $super+c            focus child
+  #d
+bindsym $super+e            exec $search -combi-modi window#drun#file-browser#ssh -show combi
+  #e
+  #f
+bindsym $super+u            fullscreen toggle
+  #g
+  #h
+bindsym $super+h            splith
+  #i
+bindsym $super+i            fullscreen disable;floating enable; resize set 500 300; sticky enable; move position 4610 1130
+bindsym $super+Shift+i      floating toggle
+  #j
+  #k
+  #l 
+  #m 
+bindsym $super+m            exec $search -dmenu -p "Youtube" | xargs -I_ firefox https://www.youtube.com/search\?client\=firefox-b-d\&q\=_
+
+  #n
+  #o
+  #p
+bindsym $super+p            focus parent
+  #q
+bindsym $super+apostrophe   kill
+  #r
+  #s
+bindsym $super+s          exec $search -dmenu -p "Google" | xargs -I_ firefox https://www.google.com/search\?client\=firefox-b-d\&q\=_
+  #t
+  #u
+  #v
+bindsym $super+v            splitv 
+  #x
+bindsym $super+x            exec --no-startup-id reboot
+bindsym $super+Shift+x      exec --no-startup-id shutdown -h now
+  #y
+  #z
+bindsym $super+z            exec $term -e v ~/.zshrc
+
+#Assigns
+assign [class="discord"]          $ws4
+assign [class="Telegram"]         $ws5
+
+# #---Arrow Keys---# #
+bindsym $super+Left		      focus left
+bindsym $super+Shift+Left   resize shrink width 5 px or 5 ppt
+bindsym $super+Down		      focus down
+bindsym $super+Shift+Down   resize shrink height 5 px or 5 ppt
+bindsym $super+Up			      focus up
+bindsym $super+Shift+Up     resize grow height 5 px or 5 ppt
+bindsym $super+Right 		    focus right
+bindsym $super+Shift+Right  resize grow width 5 px or 5 ppt
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% #decrease sound volume
+bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle # mute sound
+
+ #Window borders
+client.focused          #4c7899 #285577 #ffffff #2e9ef4   #abb2bf
+#client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+#client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+#client.urgent           #2f343a #900000 #ffffff #900000   #900000
+#client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+#client.background       #843920
+
+
+set $bg-color-border 	    #0c0c0c
+set $bg-color 	          #0c0c0c
+set $text-color           #ff0000
+
+#bar
+bar {
+  position top
+  separator_symbol " ~ "
+  status_command i3status
+
+# Bar colors
+        colors {
+          separator #00f0f0
+          #                  border             background         text
+          focused_workspace  $bg-color-border          $bg-color          $text-color
+        }
+}
+
+exec pulseaudio
+exec nitrogen --restore
